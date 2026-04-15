@@ -1,15 +1,14 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TopicController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/quiz', function () {
-    return view('quiz');
-})->middleware(['auth', 'verified'])->name('quiz');
+Route::get('/quiz', [TopicController::class, "index"])->middleware(['auth', 'verified'])->name('quiz');
 
 Route::get('/history', function () {
     return view('history');
