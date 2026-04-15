@@ -9,6 +9,7 @@ Route::get('/', function () {
 });
 
 Route::get('/quiz', [TopicController::class, "index"])->middleware(['auth', 'verified'])->name('quiz');
+Route::get('/quiz/{topic}', [TopicController::class, "show"])->middleware(['auth', 'verified'])->name('quiz.show');
 
 Route::get('/history', function () {
     return view('history');

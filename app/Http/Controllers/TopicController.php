@@ -12,4 +12,11 @@ class TopicController extends Controller
         return view("quiz.index", compact("topics"));
 
     }
+
+    public function show(Topic $topic) {
+        $topic->load('questions.answers');
+        return view("quiz.show", compact("topic"));
+
+    }
+
 }

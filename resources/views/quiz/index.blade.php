@@ -14,7 +14,18 @@
             </div>
         </div>
     </div>
-    @foreach ($topics as $topic)
-    <li>{{ $topic->topic }}</li>
-    @endforeach
+<form method="GET" onsubmit="event.preventDefault(); 
+    let topic = document.getElementById('topics').value;
+    window.location.href = '/quiz/' + topic;">
+    <label for="topics">Choose a topic:</label>
+    
+    <select name="topic" id="topics">
+        @foreach ($topics as $topic)
+            <option value="{{ $topic->id }}">{{ $topic->topic }}</option>
+        @endforeach
+    </select>
+    
+    <br>
+    <button type="submit">Start</button>
+</form>
 </x-app-layout>
