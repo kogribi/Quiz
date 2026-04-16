@@ -23,6 +23,22 @@ class TopicController extends Controller
 
     }
 
+    public function create() {
+        $topics = Topic::all();
+        return view("quiz.create", compact("topics"));
+    }
+
+     public function store(Request $request){
+        $validated = $request->validate([
+            "topic" => ["required", "max:20"],
+          ]);
+        Topic::create([
+            "topic" => $validated["topic"], 
+          ]);
+            return redirect("/quiz/create");
+    }
+
+
     public function answer(Request $request, Topic $topic)
     {
     $answers = session()->get('answers', []);

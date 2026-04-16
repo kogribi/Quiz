@@ -18,6 +18,11 @@
                     <x-nav-link :href="route('history')" :active="request()->routeIs('history')">
                         {{ __('History') }}
                     </x-nav-link>
+                    @can('admin')
+                    <x-nav-link :href="route('quiz.create')" :active="request()->routeIs('quiz.create')">
+                        {{ __('Create') }}
+                    </x-nav-link>
+                    @endcan
                 </div>
             </div>
 
@@ -75,6 +80,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('history')" :active="request()->routeIs('history')">
                 {{ __('History') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('quiz.create')" :active="request()->routeIs('quiz.create')">
+                {{ __('Create') }}
             </x-responsive-nav-link>
         </div>
 

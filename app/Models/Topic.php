@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Topic extends Model
 {
+    protected $fillable = [
+    'topic'
+];
+
     public function questions()
 {
     return $this->hasMany(Question::class);
