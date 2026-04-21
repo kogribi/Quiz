@@ -73,6 +73,8 @@
                             <input name="answer" value="{{ old('answer') }}"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
 
+                                <input type="hidden" name="is_correct" value="0">
+
                             <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
                                 <input type="checkbox" name="is_correct" value="1" class="w-4 h-4 accent-blue-600" />
                                 Correct answer
