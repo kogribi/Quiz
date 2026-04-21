@@ -15,6 +15,7 @@ class TopicController extends Controller
     }
 
     public function show(Topic $topic) {
+        session()->forget('answers');
         $questions = $topic->questions()
         ->with('answers')
         ->paginate(1);

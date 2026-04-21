@@ -68,13 +68,13 @@
                                         <div class="flex items-center gap-3 answer-row">
                                             <input
                                                 type="text"
-                                                name="answers[]"
+                                                name="answers[{{ $i }}][text]"
                                                 placeholder="Answer {{ $i + 1 }}"
                                                 required
                                                 class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                             />
                                             <label class="flex items-center gap-1.5 text-sm text-gray-600 whitespace-nowrap cursor-pointer">
-                                                <input type="radio" name="correct_answer" value="{{ $i }}" class="accent-blue-600" />
+                                                <input type="checkbox" name="answers[{{ $i }}][correct]" value="1" class="accent-blue-600" />
                                                 Correct
                                             </label>
                                             @if ($i >= 2)
@@ -129,7 +129,7 @@
                     class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <label class="flex items-center gap-1.5 text-sm text-gray-600 whitespace-nowrap cursor-pointer">
-                    <input type="radio" name="correct_answer" value="${index}" class="accent-blue-600" />
+                    <input type="checkbox" name="answers[${index}][correct]" value="1" class="accent-blue-600" />
                     Correct
                 </label>
                 <button
