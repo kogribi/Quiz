@@ -11,82 +11,143 @@
                 <div class="p-6 space-y-6 max-w-lg mx-auto">
 
                     {{-- Create Topic --}}
-                    <div class="bg-white border border-gray-200 rounded-lg p-6 max-w-lg">
-                        <h1 class="text-lg font-semibold text-gray-900 mb-4">Create a topic</h1>
+                    <div class="bg-white border border-gray-200 rounded-lg p-6">
+                        <h2 class="text-lg font-semibold text-gray-900 mb-4">Create a Topic</h2>
                         <form method="POST" action="/quiz">
                             @csrf
                             <label class="block text-sm font-medium text-gray-700 mb-1">Topic</label>
-                            <input name="topic" value="{{ old('topic') }}"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                            <input
+                                name="topic"
+                                value="{{ old('topic') }}"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
                             @error('topic')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
-                            <button type="submit" class="mt-3 bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-md hover:bg-blue-700">
+                            <button type="submit" class="mt-3 bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-md hover:bg-blue-700 transition">
                                 Create Topic
                             </button>
                         </form>
                     </div>
 
                     {{-- Create Question --}}
-                    <div class="bg-white border border-gray-200 rounded-lg p-6 max-w-lg">
-                        <h1 class="text-lg font-semibold text-gray-900 mb-4">Create a question</h1>
-                        <form method="POST" action="/question">
+                    <div class="bg-white border border-gray-200 rounded-lg p-6">
+                        <h2 class="text-lg font-semibold text-gray-900 mb-4">Create a Question</h2>
+                        <form method="POST" action="/question" class="space-y-4">
                             @csrf
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Topic</label>
-                            <select name="topic_id"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm bg-white mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                @foreach ($topics as $topic)
-                                    <option value="{{ $topic->id }}">{{ $topic->topic }}</option>
-                                @endforeach
-                            </select>
 
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Question</label>
-                            <input name="question" value="{{ old('question') }}"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                            @error('question')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                            <button type="submit" class="mt-3 bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-md hover:bg-blue-700">
+                            {{-- Topic --}}
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Topic</label>
+                                <select
+                                    name="topic_id"
+                                    required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                                >
+                                    @foreach ($topics as $topic)
+                                        <option value="{{ $topic->id }}">{{ $topic->topic }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            {{-- Question --}}
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Question</label>
+                                <input
+                                    name="question"
+                                    required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+
+                            {{-- Answers --}}
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Answers</label>
+                                <div id="answers-list" class="space-y-2">
+                                    @for ($i = 0; $i < 4; $i++)
+                                        <div class="flex items-center gap-3 answer-row">
+                                            <input
+                                                type="text"
+                                                name="answers[]"
+                                                placeholder="Answer {{ $i + 1 }}"
+                                                required
+                                                class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            />
+                                            <label class="flex items-center gap-1.5 text-sm text-gray-600 whitespace-nowrap cursor-pointer">
+                                                <input type="radio" name="correct_answer" value="{{ $i }}" class="accent-blue-600" />
+                                                Correct
+                                            </label>
+                                            @if ($i >= 2)
+                                                <button
+                                                    type="button"
+                                                    onclick="removeAnswer(this)"
+                                                    class="text-gray-400 hover:text-red-500 transition text-lg leading-none"
+                                                    title="Remove"
+                                                >&times;</button>
+                                            @else
+                                                <span class="w-5"></span>
+                                            @endif
+                                        </div>
+                                    @endfor
+                                </div>
+
+                                <button
+                                    type="button"
+                                    id="add-answer-btn"
+                                    class="mt-3 flex items-center gap-1.5 text-sm text-blue-600 hover:text-blue-700 font-medium transition"
+                                >
+                                    <span class="text-lg leading-none">+</span> Add Answer
+                                </button>
+                            </div>
+
+                            <button type="submit" class="w-full bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-md hover:bg-blue-700 transition">
                                 Create Question
                             </button>
                         </form>
                     </div>
 
-                    {{-- Create Answer --}}
-                    <div class="bg-white border border-gray-200 rounded-lg p-6 max-w-lg">
-                        <h1 class="text-lg font-semibold text-gray-900 mb-4">Create an answer</h1>
-                        <form method="POST" action="/answer">
-                            @csrf
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Question</label>
-                            <select name="question_id"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm bg-white mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                @foreach ($topics as $topic)
-                                    <optgroup label="{{ $topic->topic }}">
-                                        @foreach ($topic->questions as $question)
-                                            <option value="{{ $question->id }}">{{ $question->question }}</option>
-                                        @endforeach
-                                    </optgroup>
-                                @endforeach
-                            </select>
-
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Answer</label>
-                            <input name="answer" value="{{ old('answer') }}"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-
-                                <input type="hidden" name="is_correct" value="0">
-
-                            <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
-                                <input type="checkbox" name="is_correct" value="1" class="w-4 h-4 accent-blue-600" />
-                                Correct answer
-                            </label>
-
-                            <button type="submit" class="mt-3 bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-md hover:bg-blue-700">
-                                Create Answer
-                            </button>
-                        </form>      
-                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        let answerCount = 4;
+
+        document.getElementById('add-answer-btn').addEventListener('click', function () {
+            const list = document.getElementById('answers-list');
+            const index = answerCount;
+
+            const row = document.createElement('div');
+            row.className = 'flex items-center gap-3 answer-row';
+            row.innerHTML = `
+                <input
+                    type="text"
+                    name="answers[]"
+                    placeholder="Answer ${index + 1}"
+                    required
+                    class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <label class="flex items-center gap-1.5 text-sm text-gray-600 whitespace-nowrap cursor-pointer">
+                    <input type="radio" name="correct_answer" value="${index}" class="accent-blue-600" />
+                    Correct
+                </label>
+                <button
+                    type="button"
+                    onclick="removeAnswer(this)"
+                    class="text-gray-400 hover:text-red-500 transition text-lg leading-none"
+                    title="Remove"
+                >&times;</button>
+            `;
+
+            list.appendChild(row);
+            answerCount++;
+        });
+
+        function removeAnswer(btn) {
+            const rows = document.querySelectorAll('.answer-row');
+            if (rows.length <= 2) return;
+            btn.closest('.answer-row').remove();
+        }
+    </script>
 </x-app-layout>
