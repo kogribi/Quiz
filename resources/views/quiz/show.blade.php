@@ -41,6 +41,11 @@
                             {{ $questions->hasMorePages() ? 'Next' : 'Finish' }}
                         </button>
                     </form>
+                    <form method="POST" action="{{ route('quiz.answer', $topic->id) }}">
+                        <button type="button" class="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition">
+                            edit
+                        </button>
+                    </form>
                     @endforeach
                 </div>
             </div>

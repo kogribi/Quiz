@@ -14,9 +14,10 @@ Route::get('/', function () {
 Route::get('/quiz', [TopicController::class, "index"])->middleware(['auth', 'verified'])->name('quiz');
 Route::get('/quiz/create', [TopicController::class, 'create'])->middleware(['auth', 'verified', 'can:admin'])->name('quiz.create');
 Route::post('/quiz', [TopicController::class, 'store'])->middleware(['auth', 'verified', 'can:admin']);
+Route::delete('/quiz/{topic}', [TopicController::class, 'destroy'])->middleware(['auth', 'verified', 'can:admin'])->name('quiz.delete');
 Route::get('/quiz/{topic}', [TopicController::class, "show"])->middleware(['auth', 'verified'])->name('quiz.show');
 Route::post('/quiz/{topic}/answer', [TopicController::class, 'answer'])->middleware(['auth', 'verified'])->name('quiz.answer');
-
+Route::put('/quiz/{topic}', [TopicController::class, 'update'])->middleware(['auth', 'verified', 'can:admin'])->name('quiz.edit');
 Route::post('/question', [QuestionController::class, 'store'])->middleware(['auth', 'verified', 'can:admin']);
 
 Route::post('/answer', [AnswerController::class, 'store'])->middleware(['auth', 'verified', 'can:admin']);

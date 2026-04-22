@@ -15,7 +15,6 @@ class TopicController extends Controller
     }
 
     public function show(Topic $topic) {
-        session()->forget('answers');
         $questions = $topic->questions()
         ->with('answers')
         ->paginate(1);
@@ -37,6 +36,21 @@ class TopicController extends Controller
             "topic" => $validated["topic"], 
           ]);
             return redirect("/quiz/create");
+    }
+
+    public function update(Request $request, Topic $topic){
+        $validated = $request->validate([
+            "topic" => ["required", "max:50"],
+          ]);
+        $topic->update([
+        'topic' => $validated['topic']
+    ]);
+    return response()->json(['success' => true], 200);
+    }
+
+    public function destroy(Topic $topic){
+        $topic->delete();
+        return response()->json(['success' => true], 200);
     }
 
 
