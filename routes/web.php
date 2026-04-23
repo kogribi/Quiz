@@ -20,6 +20,8 @@ Route::post('/quiz/{topic}/answer', [TopicController::class, 'answer'])->middlew
 Route::put('/quiz/{topic}', [TopicController::class, 'update'])->middleware(['auth', 'verified', 'can:admin'])->name('quiz.edit');
 
 Route::post('/question', [QuestionController::class, 'store'])->middleware(['auth', 'verified', 'can:admin']);
+Route::get('/question/{question}/edit', [QuestionController::class, 'edit'])->middleware(['auth', 'verified', 'can:admin'])->name('question.edit');
+Route::put('/question/{question}', [QuestionController::class, 'update'])->middleware(['auth', 'verified', 'can:admin'])->name('question.update');
 Route::delete('/question/{question}', [QuestionController::class, 'destroy'])->middleware(['auth', 'verified', 'can:admin'])->name('question.destroy');
 
 Route::post('/answer', [AnswerController::class, 'store'])->middleware(['auth', 'verified', 'can:admin']);
