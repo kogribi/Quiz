@@ -39,4 +39,8 @@ class QuestionController extends Controller
     return back()->with('success', 'Question created!');
     }
 
+    public function destroy(Question $question){
+        $question->delete();
+        return redirect()->back()->with('success', 'Question deleted!');
+    }
 }
