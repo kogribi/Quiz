@@ -73,7 +73,7 @@ class QuestionController extends Controller
         );
     }
 
-    return redirect()->route('quiz')->with('success', 'Updated!');
+    return redirect()->route('quiz.show', $question->topic->id)->with('success', 'Updated!');
 }
 
     public function destroy(Question $question){
