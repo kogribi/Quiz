@@ -123,7 +123,7 @@
             row.innerHTML = `
                 <input
                     type="text"
-                    name="answers[]"
+                    name="answers[${index}][text]"
                     placeholder="Answer ${index + 1}"
                     required
                     class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
