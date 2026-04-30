@@ -42,6 +42,7 @@
                         </button>
                     </form>
                     <br>
+                    @can('admin')
                     <div class="flex gap-2">
                     <a href="{{ route('question.edit', $question->id) }}" 
                         class="bg-yellow-500 text-white px-5 py-2 rounded-md hover:bg-yellow-600 transition">
@@ -56,6 +57,7 @@
                         </button>
                     </form>
                     </div>
+                    @endcan
                     @endforeach
                 </div>
             </div>
