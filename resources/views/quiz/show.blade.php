@@ -64,8 +64,9 @@
         </div>
     </div>
 </x-app-layout>
+// Prevents caching and forces reload when navigating back to the quiz page
 
-<script>
+<!-- <script>
 window.addEventListener("pageshow", function (event) {
     const navType = performance.getEntriesByType("navigation")[0]?.type;
 
@@ -73,4 +74,4 @@ window.addEventListener("pageshow", function (event) {
         window.location.reload();
     }
 });
-</script>
+</script> -->
