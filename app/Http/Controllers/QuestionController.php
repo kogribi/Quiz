@@ -12,17 +12,21 @@ class QuestionController extends Controller
     public function index()
     {
         $questions = Question::all();
-        return view("question.index", compact("question"));
+        return view("question.index", compact("questions"));
     }
     public function store(Request $request)
     {
         $validated = $request->validate([
         'topic_id'         => 'required|exists:topics,id',
-        'question'         => 'required|string',
+        'question'         => 'required',
         'answers'          => 'required|array|min:2',
-        'answers.*.text'   => 'required|string',
-        'answers.*.correct'=> 'nullable|in:0,1',
+        'answers.*.text'   => 'required|string|max:50',
+        'correct_answer'  => 'required|integer',
     ]);
+
+    if (!isset($validated['answers'][$validated['correct_answer']])) {
+    return back()->withErrors(['correct_answer' => 'Invalid correct answer']);
+}
 
     $question = Question::create([
         'topic_id' => $validated['topic_id'],
@@ -33,7 +37,7 @@ class QuestionController extends Controller
         Answer::create([
             'question_id' => $question->id,
             'answer'      => $answer['text'],
-            'is_correct'  => isset($answer['correct']) ? 1 : 0,
+            'is_correct'  => ($index == $validated['correct_answer']) ? 1 : 0,
         ]);
     }
 

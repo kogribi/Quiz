@@ -8,7 +8,7 @@
     <div class="w-full bg-gray-200 h-4 rounded mb-4">
     <div 
         class="bg-blue-500 h-4 rounded"
-        style="width: {{ ($questions->currentPage() / $questions->lastPage()) * 100 }}%">
+        style="width: {{ ($currentPage / $total) * 100 }}%">
     </div>
     </div>
     <div class="py-12">
@@ -16,16 +16,15 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <p>
-                        Question {{ $questions->currentPage() }} of {{ $questions->lastPage() }}
+                        Question {{ $currentPage }} of {{ $total }}
                     </p>
-                    @foreach ($questions as $question)
                     <form method="POST" action="{{ route('quiz.answer', $topic->id) }}">
                         @csrf
 
                         <h3 class="mt-2">{{ $question->question }}</h3>
 
                         <input type="hidden" name="question_id" value="{{ $question->id }}">
-                        <input type="hidden" name="page" value="{{ $questions->currentPage() }}">
+                        <input type="hidden" name="page" value="{{ $currentPage }}">
 
                         @foreach ($question->answers->shuffle() as $answer)
                             <div class="mt-2">
@@ -38,7 +37,7 @@
                         @endforeach
 
                         <button type="submit" class="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition">
-                            {{ $questions->hasMorePages() ? 'Next' : 'Finish' }}
+                            {{ $currentPage < $total ? 'Next' : 'Finish' }}
                         </button>
                     </form>
                     <br>
@@ -58,13 +57,11 @@
                     </form>
                     </div>
                     @endcan
-                    @endforeach
                 </div>
             </div>
         </div>
     </div>
 </x-app-layout>
-// Prevents caching and forces reload when navigating back to the quiz page
 
 <!-- <script>
 window.addEventListener("pageshow", function (event) {

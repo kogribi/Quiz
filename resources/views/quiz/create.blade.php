@@ -48,6 +48,9 @@
                                         <option value="{{ $topic->id }}">{{ $topic->topic }}</option>
                                     @endforeach
                                 </select>
+                                @error('topic_id')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             {{-- Question --}}
@@ -58,6 +61,9 @@
                                     required
                                     class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
+                                @error('question')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             {{-- Answers --}}
@@ -70,11 +76,12 @@
                                                 type="text"
                                                 name="answers[{{ $i }}][text]"
                                                 placeholder="Answer {{ $i + 1 }}"
+                                                value="{{ old("answers.$i.text") }}"
                                                 required
-                                                class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 @error("answers.$i.text") border-red-500 @else border-gray-300 @enderror"
                                             />
                                             <label class="flex items-center gap-1.5 text-sm text-gray-600 whitespace-nowrap cursor-pointer">
-                                                <input type="checkbox" name="answers[{{ $i }}][correct]" value="1" class="accent-blue-600" />
+                                                <input type="radio" name="correct_answer" value="{{ $i }}" class="accent-blue-600" />
                                                 Correct
                                             </label>
                                             @if ($i >= 2)
@@ -88,7 +95,9 @@
                                                 <span class="w-5"></span>
                                             @endif
                                         </div>
+                                    
                                     @endfor
+                                    
                                 </div>
 
                                 <button
@@ -129,7 +138,7 @@
                     class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <label class="flex items-center gap-1.5 text-sm text-gray-600 whitespace-nowrap cursor-pointer">
-                    <input type="checkbox" name="answers[${index}][correct]" value="1" class="accent-blue-600" />
+                    <input type="radio" name="correct_answer" value="${index}" class="accent-blue-600" />
                     Correct
                 </label>
                 <button

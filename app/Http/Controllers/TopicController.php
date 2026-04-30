@@ -13,14 +13,56 @@ class TopicController extends Controller
         return view("quiz.index", compact("topics"));
 
     }
+public function start(Topic $topic)
+        {
+        $questionIds = $topic->questions()
+            ->inRandomOrder()
+            ->pluck('id')
+            ->toArray();
 
-    public function show(Topic $topic) {
-        $questions = $topic->questions()
+        session([
+            'quiz_question_order' => $questionIds,
+            'answers' => [] // reset answers
+        ]);
+
+        return redirect()->route('quiz.show', [
+            'topic' => $topic->id,
+            'page' => 1
+        ]);
+        }
+
+    public function show(Request $request, Topic $topic)
+    {
+    $questionIds = session('quiz_question_order');
+
+    if (!$questionIds) {
+        return redirect()->route('quiz.start', $topic->id);
+    }
+
+    $validIds = $topic->questions()->pluck('id')->toArray();
+
+    if (count(array_diff($questionIds, $validIds)) > 0) {
+        return redirect()->route('quiz.start', $topic->id);
+    }
+
+    $currentPage = (int) $request->get('page', 1);
+
+    $currentId = $questionIds[$currentPage - 1] ?? null;
+
+    if (!$currentId) {
+        abort(404);
+    }
+
+    $question = $topic->questions()
         ->with('answers')
-        ->paginate(1);
+        ->findOrFail($currentId);
 
-    return view("quiz.show", compact("topic", "questions"));
-
+    return view("quiz.show", [
+        "topic" => $topic,
+        "question" => $question,
+        "currentPage" => $currentPage,
+        "total" => count($questionIds)
+    ]);
     }
 
     public function create() {

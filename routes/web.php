@@ -18,6 +18,7 @@ Route::delete('/quiz/{topic}', [TopicController::class, 'destroy'])->middleware(
 Route::get('/quiz/{topic}', [TopicController::class, "show"])->middleware(['auth', 'verified'])->name('quiz.show');
 Route::post('/quiz/{topic}/answer', [TopicController::class, 'answer'])->middleware(['auth', 'verified'])->name('quiz.answer');
 Route::put('/quiz/{topic}', [TopicController::class, 'update'])->middleware(['auth', 'verified', 'can:admin'])->name('quiz.edit');
+Route::get('/quiz/{topic}/start', [TopicController::class, 'start'])->middleware(['auth', 'verified'])->name('quiz.start');
 
 Route::post('/question', [QuestionController::class, 'store'])->middleware(['auth', 'verified', 'can:admin']);
 Route::get('/question/{question}/edit', [QuestionController::class, 'edit'])->middleware(['auth', 'verified', 'can:admin'])->name('question.edit');
