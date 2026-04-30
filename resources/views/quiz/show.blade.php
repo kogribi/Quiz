@@ -67,7 +67,9 @@
 
 <script>
 window.addEventListener("pageshow", function (event) {
-    if (event.persisted) {
+    const navType = performance.getEntriesByType("navigation")[0]?.type;
+
+    if (event.persisted || navType === "back_forward") {
         window.location.reload();
     }
 });
